@@ -1,7 +1,10 @@
 const grid = document.getElementById("grid")
-const div = document.getElementsByClassName('grid');
-
-//  creates grid. Nested loop. First, it iterates 1 to create a row. Then, it goes into the nested loop to create columns and iterates x times to create columns under the rows. Then when cols no longer < x it exits the nested loop and goes back to the outer loop to create another row. Then it goes into the nested cols loop etc rinse repeat.
+const menu = document.querySelector('.menu')
+const cells = document.querySelectorAll('div.grid-cell')
+const black = document.getElementById("black")
+const grayscale = document.getElementById("grayscale")
+const technicolor = document.getElementById("technicolor")
+const reset = document.getElementById("reset")
 
 // create grid
 function createGrid(rows, cols) {
@@ -17,72 +20,52 @@ function createGrid(rows, cols) {
       row.appendChild(cell);
     }
     grid.appendChild(row);
+    grid.addEventListener("mouseover", drawBlack);
   }
   return grid;
 }
 
 window.onload = createGrid(16, 16);
 
-// highlight cell on mouseover
-const cells = document.querySelectorAll('div.grid-cell')
-const black = document.getElementById("black")
-// THIS NEEDS TO BE FIXED!!!!!!!
-function getBlack(e) {
-  if (e.target.className === "grid-cell") {
-    // e.target.classList.add("mouseover")
-    e.target.style.background = "#000";
-  }
-  else {
-    console.log("This is not the grid cell.")
-  }
-}
-
-grid.addEventListener("mouseover", getBlack);
-// black.addEventListener("click", function(){
-//   grid.addEventListener("mouseover", getBlack)
-// });
-
-// button event listener - bubbling
-const menu = document.querySelector('.menu')
-
+// button event listeners
 menu.addEventListener("click", function(e) {
   if (e.target.id == "black") {
-    grid.addEventListener("mouseover", getBlack);
+    grid.removeEventListener("mouseover", drawGrayscale);
+    grid.removeEventListener("mouseover", drawTechnicolor);
+    grid.addEventListener("mouseover", drawBlack);
   }
   if (e.target.id == "grayscale") {
-    grid.addEventListener("mouseover", getGrayscale);
+    grid.removeEventListener("mouseover", drawBlack);
+    grid.removeEventListener("mouseover", drawTechnicolor);
+    grid.addEventListener("mouseover", drawGrayscale);
+
   }
   if (e.target.id == "technicolor") {
-    grid.addEventListener("mouseover", getTechnicolor);
+    grid.removeEventListener("mouseover", drawGrayscale);
+    grid.removeEventListener("mouseover", drawBlack);
+    grid.addEventListener("mouseover", drawTechnicolor);
   }
   if (e.target.id == "reset") {
     resetGrid();
   }
 })
 
-// grayscale highlight
-const grayscale = document.getElementById("grayscale")
-
-// function addGrayscale(){
-//   grid.addEventListener("mouseover", getGrayscale)
-// }
-
-function getGrayscale(e){
-    console.log(e);
-    if (e.target.className === "grid-cell") {
-      e.target.style.opacity = `${Number(e.target.style.opacity) + 0.1}`
-    }
+// black highlight
+function drawBlack(e) {
+  if (e.target.className === "grid-cell") {
+    e.target.style.background = "#000";
+  }
+  console.log(e.target.className)
 }
 
-// grayscale.addEventListener("click", addGrayscale)
+// grayscale highlight
+function drawGrayscale(e){
+  if (e.target.className === "grid-cell") {
+    e.target.style.opacity = `${Number(e.target.style.opacity) + 0.1}`
+  }
+}
 
 // randomized technicolor highlight
-const technicolor = document.getElementById("technicolor")
-
-// function addTechnicolor() {
-//   grid.addEventListener("mouseover", getTechnicolor)
-// }
-
 function getColor(){
   let letters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
   let color = "#"
@@ -90,23 +73,24 @@ function getColor(){
     let randomCode = letters[Math.floor(Math.random() * letters.length)]
     color = color + randomCode;
   }
-  console.log(color);
   return color;
 }
 
-function getTechnicolor(e){
+function drawTechnicolor(e){
   if (e.target.className === "grid-cell") {
     e.target.style.background = getColor();
   }
+  console.log(e.target.className)
 }
-
-// technicolor.addEventListener("click", addTechnicolor)
 
 // reset grid
-const reset = document.getElementById("reset")
 function resetGrid(){
   let squares = prompt("How many squares in the new grid?", "");
-  grid.innerHTML = "";
-  createGrid(squares, squares);
+  if (squares % 1 != 0) {
+    alert("Please enter a valid integer.")
+  }
+  else {
+    grid.innerHTML = "";
+    createGrid(squares, squares);
+  }
 }
-// reset.addEventListener("click", resetGrid)

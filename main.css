@@ -4,8 +4,6 @@
 }
 
 h1 {
-  /* animation-duration: 2s;
-  animation-name: slidein; */
   font-family: "Gloria Hallelujah", cursive;
 }
 
@@ -21,18 +19,6 @@ h1:hover {
   box-shadow: 5px 10px #000;
 }
 
-@keyframes slidein {
-  from {
-    margin-left: 100%;
-    width: 100%;
-  }
-
-  to {
-    margin-left: 0%;
-    width: 100%;
-  }
-}
-
 .button {
   background-color: rgb(164, 236, 212);
   border-radius: 10px;
@@ -46,7 +32,6 @@ h1:hover {
   width: 70%;
   margin: auto;
   padding: 2em;
-
 }
 
 .menu {
@@ -63,15 +48,4 @@ h1:hover {
 
 .grid-cell {
   display: inline-block;
-}
-
-/* .mouseover {
-  background-color: black;
-}
-
-.grayscale {
-  background-color: rgb(141, 119, 228);
-} */
-
-.grid-row {
 }
